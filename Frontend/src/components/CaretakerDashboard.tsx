@@ -132,9 +132,9 @@ export const CaretakerDashboard: React.FC<CaretakerDashboardProps> = ({
           <div className="flex items-center gap-2">
             <BrainTraceLogo className="w-6 h-6" />
             <span className="font-black text-base tracking-tight">BrainTrace</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-[10px] font-extrabold uppercase tracking-wider">
+            {/* <span className="px-2.5 py-0.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-[10px] font-extrabold uppercase tracking-wider">
               Caretaker Portal
-            </span>
+            </span> */}
           </div>
         </div>
 

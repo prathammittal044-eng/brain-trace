@@ -229,9 +229,9 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
           <div className="flex items-center gap-2">
             <BrainTraceLogo className="w-6 h-6" />
             <span className="font-black text-base tracking-tight">BrainTrace</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-blue-100 border border-blue-300 text-blue-900 text-[10px] font-extrabold uppercase tracking-wider">
+            {/* <span className="px-2.5 py-0.5 rounded-full bg-blue-100 border border-blue-300 text-blue-900 text-[10px] font-extrabold uppercase tracking-wider">
               Doctor Console
-            </span>
+            </span> */}
           </div>
         </div>
 
@@ -265,9 +265,9 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h1 className="text-xl sm:text-2xl font-black text-black">Doctor Clinical Dashboard</h1>
-              <span className="text-xs font-bold bg-blue-50 text-blue-900 px-2.5 py-0.5 rounded-md border border-blue-200 flex items-center gap-1">
+              {/* <span className="text-xs font-bold bg-blue-50 text-blue-900 px-2.5 py-0.5 rounded-md border border-blue-200 flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-blue-600" /> AI BrainTrace Engine Active
-              </span>
+              </span> */}
             </div>
             <p className="text-xs sm:text-sm text-neutral-600">
               Welcome back, <span className="font-bold text-black">{userName}</span>. You have 3 patient consultations scheduled today.

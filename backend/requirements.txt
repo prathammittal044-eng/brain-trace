@@ -1,0 +1,17 @@
+# ScanSaarthi Backend Dependencies
+# Every package here has a specific purpose.
+
+fastapi              # HTTP framework
+uvicorn              # ASGI server
+python-multipart     # Required for FastAPI file uploads (UploadFile)
+
+pillow               # Image loading & manipulation
+numpy                # Array operations for Grad-CAM overlay
+
+torch                # Deep learning framework (ResNet-18 inference)
+torchvision          # Pre-built model architectures & image transforms
+
+opencv-python        # Saving Grad-CAM overlay images (cv2.imwrite)
+grad-cam             # Grad-CAM heatmap generation for Model 2 (imports as pytorch_grad_cam)
+
+python-dotenv        # Load .env file (optional, for local development)

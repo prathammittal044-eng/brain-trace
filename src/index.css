@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-google-sans: 'Google Sans', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-italic-serif: 'Instrument Serif', 'Playfair Display', Georgia, serif;
+  }
+
+  html {
+    font-family: var(--font-google-sans);
+    scroll-behavior: smooth;
+    background-color: #FFFFFF;
+    color: #09090b;
+  }
+
+  body {
+    background-color: #FFFFFF;
+    overflow-x: hidden;
+  }
+}
+
+.font-serif-italic {
+  font-family: var(--font-italic-serif);
+  font-style: italic;
+}
+
+/* Custom Hero Radial Light Ray Animation */
+@keyframes rayRotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.08);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.85;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.2);
+  }
+}
+
+.hero-light-rays {
+  background: 
+    radial-gradient(circle at 50% 45%, rgba(255, 200, 120, 0.18) 0%, rgba(180, 110, 50, 0.12) 30%, rgba(12, 10, 8, 0.98) 70%),
+    conic-gradient(
+      from 0deg at 50% 45%,
+      #090807 0deg,
+      #2b1f13 18deg,
+      #080706 35deg,
+      #3a2717 55deg,
+      #0d0b09 75deg,
+      #422b19 95deg,
+      #0a0807 115deg,
+      #2e1f13 135deg,
+      #0a0807 160deg,
+      #3d2817 180deg,
+      #0c0a08 205deg,
+      #442e1b 225deg,
+      #090806 250deg,
+      #352315 275deg,
+      #0a0807 300deg,
+      #402a18 325deg,
+      #090807 360deg
+    );
+  background-blend-mode: color-dodge, normal;
+}
+
+.hero-ray-overlay {
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 230, 180, 0.15) 0%,
+    rgba(140, 80, 30, 0.1) 40%,
+    rgba(5, 5, 5, 0.95) 85%
+  );
+}
+
+.bg-vibrant-black {
+  background-color: #09090b;
+}
+
+.border-vibrant-black {
+  border-color: #18181b;
+}
+
+.text-vibrant-black {
+  color: #09090b;
+}
+
+/* Print Stylesheet for BrainTrace Cognitive Reports */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  header, aside, nav, .print\:hidden {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+    size: auto;
+  }
+}
+

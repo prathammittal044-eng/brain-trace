@@ -1,0 +1,6 @@
+{
+  "name": "BrainTrace Landing Page",
+  "description": "A high-performance landing page for BrainTrace featuring a hero section, platform insights, and contact form.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

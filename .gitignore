@@ -4,3 +4,4 @@
 .env
 demenx.db
 uploads/
+*.zip

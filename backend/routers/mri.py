@@ -190,18 +190,23 @@ async def analyze_mri(
         logger.exception("Unexpected error during image validation")
         return _api_response(False, "Failed to process the uploaded file.", status_code=400)
 
-    # 2. Check model availability from app state
+    # 2. Check model availability from app state or lazy loader
     app = request.app if request else None
     model1 = getattr(app.state, "model1", None) if app else None
     model2 = getattr(app.state, "model2", None) if app else None
     device = getattr(app.state, "device", None) if app else None
 
-    # Fallback import if not on state
+    # Fallback to lazy loading if not preloaded
     if model1 is None:
-        import main
-        model1 = getattr(main, "_model1", None)
-        model2 = getattr(main, "_model2", None)
-        device = getattr(main, "_device", None)
+        try:
+            import main
+            model1 = main.get_model1()
+            device = main._device or main._resolve_device()
+            if app:
+                app.state.model1 = model1
+                app.state.device = device
+        except Exception:
+            logger.exception("Failed to lazily load Model 1")
 
     if model1 is None:
         return _api_response(
@@ -262,6 +267,16 @@ async def analyze_mri(
         )
 
     # 4. Model 2 — Dementia Classification
+    if model2 is None:
+        try:
+            import main
+            model2 = main.get_model2()
+            if app:
+                app.state.model2 = model2
+        except Exception:
+            logger.exception("Failed to lazily load Model 2")
+            model2 = None
+
     if model2 is None:
         report_preview = _generate_report_preview(m1_result, None)
         return _api_response(

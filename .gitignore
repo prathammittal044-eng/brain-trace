@@ -11,3 +11,10 @@ model1_things/model1_split/
 model1_things/checkpoints/
 model1_things/outputs/
 model1_things/sample_images1/
+
+# Model 2 datasets and generated artifacts
+model2_things/model2_data/
+model2_things/checkpoints/
+model2_things/model2_export/
+model2_things/outputs/
+model2_things/sample_images2/

@@ -14,7 +14,7 @@
 
 ## 📌 Executive Summary
 
-**BrainTrace (DemenX)** is an end-to-end medical AI platform engineered to tackle neurodegenerative cognitive decline and dementia. It combines **dual-stage deep learning validation (ResNet-18)** and **Grad-CAM explainable AI** with a **multi-user Connected Care Circle** architecture.
+**BrainTrace** is an end-to-end medical AI platform engineered to tackle neurodegenerative cognitive decline and dementia. It combines **dual-stage deep learning validation (ResNet-18)** and **Grad-CAM explainable AI** with a **multi-user Connected Care Circle** architecture.
 
 Instead of disconnected clinical tools, BrainTrace bridges the diagnostic and care journey across 4 distinct stakeholders:
 1. **Persons Living with Dementia (User Type A):** Minimal-cognitive-load daily support view.

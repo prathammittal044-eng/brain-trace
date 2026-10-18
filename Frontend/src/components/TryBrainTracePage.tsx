@@ -5,6 +5,7 @@ import { BrainTraceLogo } from './BrainTraceLogo';
 import { PatientDashboard } from './PatientDashboard';
 import { CaretakerDashboard } from './CaretakerDashboard';
 import { DoctorDashboard } from './DoctorDashboard';
+import { FamilyDashboardView } from './care_space/FamilyDashboardView';
 import { subscribeToCompanionNavigation } from '../services/companionNavigation';
 import { authApi } from '../services/apiClient';
 
@@ -12,8 +13,8 @@ import { authApi } from '../services/apiClient';
 interface TryBrainTracePageProps {
   onBackToHome: () => void;
   loggedInUser?: string | null;
-  userRole?: 'Patient' | 'Caretaker' | 'Doctor';
-  onLoginSuccess?: (userName: string, role: 'Patient' | 'Caretaker' | 'Doctor') => void;
+  userRole?: 'Patient' | 'Caretaker' | 'Doctor' | 'Family';
+  onLoginSuccess?: (userName: string, role: 'Patient' | 'Caretaker' | 'Doctor' | 'Family') => void;
   onLogout?: () => void;
 }
 
@@ -25,7 +26,7 @@ export const TryBrainTracePage: React.FC<TryBrainTracePageProps> = ({
   onLogout
 }) => {
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'otp' | 'loginOtp' | 'forgotPassword'>('login');
-  const [selectedRole, setSelectedRole] = useState<'Patient' | 'Caretaker' | 'Doctor'>(userRole);
+  const [selectedRole, setSelectedRole] = useState<'Patient' | 'Caretaker' | 'Doctor' | 'Family'>(userRole);
   const [isRoleLocked, setIsRoleLocked] = useState(false);
   
   // Login form state
@@ -69,7 +70,7 @@ export const TryBrainTracePage: React.FC<TryBrainTracePageProps> = ({
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [resetError, setResetError] = useState('');
 
-  const roles: ('Patient' | 'Caretaker' | 'Doctor')[] = ['Patient', 'Caretaker', 'Doctor'];
+  const roles: ('Patient' | 'Caretaker' | 'Doctor' | 'Family')[] = ['Patient', 'Caretaker', 'Doctor', 'Family'];
 
   // Listen for companion navigation to automatically activate dashboard views
   useEffect(() => {
@@ -123,7 +124,7 @@ export const TryBrainTracePage: React.FC<TryBrainTracePageProps> = ({
 
     authApi.login({ email, password, role: selectedRole }).catch(() => {});
 
-    const name = fullName || (selectedRole === 'Doctor' ? 'Dr. Rajesh Sharma' : selectedRole === 'Caretaker' ? 'Rahul Caregiver' : 'Demo Patient (DX-4091)');
+    const name = fullName || (selectedRole === 'Doctor' ? 'Dr. Rajesh Sharma' : selectedRole === 'Caretaker' ? 'Rahul Caregiver' : selectedRole === 'Family' ? 'Priya Sharma (Daughter)' : 'Demo Patient (DX-4091)');
     setUserDisplayName(name);
     setIsLoggedIn(true);
     if (onLoginSuccess) {
@@ -320,6 +321,19 @@ export const TryBrainTracePage: React.FC<TryBrainTracePageProps> = ({
       return (
         <CaretakerDashboard 
           userName={userDisplayName || 'Rahul Caregiver'} 
+          onLogout={() => {
+            setIsLoggedIn(false);
+            if (onLogout) onLogout();
+          }} 
+          onBackToHome={onBackToHome}
+        />
+      );
+    }
+
+    if (selectedRole === 'Family') {
+      return (
+        <FamilyDashboardView 
+          userName={userDisplayName || 'Priya Sharma (Daughter)'} 
           onLogout={() => {
             setIsLoggedIn(false);
             if (onLogout) onLogout();

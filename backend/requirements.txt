@@ -1,19 +1,26 @@
-# ScanSaarthi Backend Dependencies
-# Every package here has a specific purpose.
+# DemenX / BrainTrace Backend Dependencies
+# Complete and verified package requirements for production and local development
 
 fastapi              # HTTP framework
 uvicorn              # ASGI server
 python-multipart     # Required for FastAPI file uploads (UploadFile)
+pydantic             # Data validation and DTO schemas
+email-validator      # EmailStr validation for Pydantic
+
+sqlalchemy           # Database ORM
+pyjwt                # JSON Web Tokens for authentication
+python-dotenv        # Load .env file
 
 pillow               # Image loading & manipulation
 numpy                # Array operations for Grad-CAM overlay
 
 torch                # Deep learning framework (ResNet-18 inference)
 torchvision          # Pre-built model architectures & image transforms
-
-opencv-python        # Saving Grad-CAM overlay images (cv2.imwrite)
-grad-cam             # Grad-CAM heatmap generation for Model 2 (imports as pytorch_grad_cam)
+opencv-python-headless # Headless OpenCV for server compatibility (cv2.imwrite)
+grad-cam             # Grad-CAM heatmap generation for Model 2 (pytorch_grad_cam)
 
 huggingface_hub      # Download model checkpoints from Hugging Face Hub
+google-genai         # Gemini AI Companion integration
 
-python-dotenv        # Load .env file (optional, for local development)
+httpx                # Async HTTP client and TestClient support
+pytest               # Testing framework

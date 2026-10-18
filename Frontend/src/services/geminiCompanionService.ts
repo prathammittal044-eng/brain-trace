@@ -7,6 +7,8 @@
 import { CompanionAction, CompanionContext } from './companionNavigation';
 import { getKnowledgeBaseAnswer } from './companionKnowledgeBase';
 
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || '';
+
 export interface CompanionMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -43,7 +45,7 @@ export async function sendCompanionMessage(
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 12000); // 12s timeout
 
-    const response = await fetch('/api/companion/chat', {
+    const response = await fetch(`${API_BASE_URL}/api/companion/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

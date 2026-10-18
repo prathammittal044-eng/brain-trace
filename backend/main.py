@@ -5,9 +5,8 @@ DemenX — AI-Powered Brain Health Screening and Cognitive Monitoring Backend
 import logging
 import os
 from contextlib import asynccontextmanager
-from pathlib import Path
 import torch
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -16,7 +15,6 @@ from database_init import init_db
 from database import engine
 from services import model1 as model1_service
 from services import model2 as model2_service
-from services import gradcam as gradcam_service
 from routers import auth, mri, cognitive, appointments, messages, companion, profile, scan_files, care_space
 
 # ---------------------------------------------------------------------------

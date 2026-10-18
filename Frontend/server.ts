@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import http from 'http';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
+import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';

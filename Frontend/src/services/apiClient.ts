@@ -285,3 +285,142 @@ export const profileApi = {
     });
   },
 };
+
+// ---------------------------------------------------------------------------
+// Connected Care / Care Space API
+// ---------------------------------------------------------------------------
+export const careSpaceApi = {
+  async getContext() {
+    return request<any>('/api/v1/care-space/context', { method: 'GET' });
+  },
+
+  async createSpace(data: { name: string; assistance_level?: string; preferences?: any; safety_plan?: any }) {
+    return request<any>('/api/v1/care-space', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getPatientView() {
+    return request<any>('/api/v1/care-space/patient-view', { method: 'GET' });
+  },
+
+  async getCaregiverView() {
+    return request<any>('/api/v1/care-space/caregiver-view', { method: 'GET' });
+  },
+
+  async getFamilyView() {
+    return request<any>('/api/v1/care-space/family-view', { method: 'GET' });
+  },
+
+  async getRoutine() {
+    return request<any[]>('/api/v1/care-space/routine', { method: 'GET' });
+  },
+
+  async addRoutineItem(data: {
+    title: string;
+    description?: string;
+    category: 'medication' | 'activity' | 'meal' | 'reminder';
+    scheduled_time: string;
+    assigned_to_role?: string;
+    recurrence?: string;
+    difficulty_level?: 'easy' | 'moderate';
+    icon_hint?: string;
+  }) {
+    return request<any>('/api/v1/care-space/routine', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async toggleRoutineItem(id: string) {
+    return request<any>(`/api/v1/care-space/routine/${id}/toggle`, {
+      method: 'PUT',
+    });
+  },
+
+  async getCareLogs() {
+    return request<any[]>('/api/v1/care-space/care-logs', { method: 'GET' });
+  },
+
+  async addCareLog(data: {
+    log_type: 'vitals' | 'mood' | 'meal' | 'hydration' | 'observation';
+    title: string;
+    details?: any;
+    notes?: string;
+  }) {
+    return request<any>('/api/v1/care-space/care-logs', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getMemoryBook() {
+    return request<any[]>('/api/v1/care-space/memory-book', { method: 'GET' });
+  },
+
+  async addMemoryItem(data: {
+    item_type: 'familiar_person' | 'life_memory' | 'favorite_place' | 'comfort_item';
+    name_or_title: string;
+    relationship_or_context?: string;
+    description?: string;
+    phone?: string;
+    avatar_or_photo_url?: string;
+    is_private_to_patient?: boolean;
+    is_favorite?: boolean;
+  }) {
+    return request<any>('/api/v1/care-space/memory-book', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getSafetyPlan() {
+    return request<any>('/api/v1/care-space/safety-plan', { method: 'GET' });
+  },
+
+  async updateSafetyPlan(data: any) {
+    return request<any>('/api/v1/care-space/safety-plan', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getMembers() {
+    return request<any[]>('/api/v1/care-space/members', { method: 'GET' });
+  },
+
+  async inviteMember(data: {
+    email: string;
+    role: 'family_member' | 'trusted_contact';
+    relationship_label: string;
+    permissions?: any;
+  }) {
+    return request<any>('/api/v1/care-space/invitations', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async acceptInvitation(invite_code: string) {
+    return request<any>('/api/v1/care-space/invitations/accept', {
+      method: 'POST',
+      body: JSON.stringify({ invite_code }),
+    });
+  },
+
+  async updatePermissions(member_id: string, permissions: any) {
+    return request<any>(`/api/v1/care-space/members/${member_id}/permissions`, {
+      method: 'PUT',
+      body: JSON.stringify({ permissions }),
+    });
+  },
+
+  async getEducationResources() {
+    return request<any[]>('/api/v1/care-space/education', { method: 'GET' });
+  },
+
+  async getAuditLogs() {
+    return request<any[]>('/api/v1/care-space/audit-logs', { method: 'GET' });
+  },
+};

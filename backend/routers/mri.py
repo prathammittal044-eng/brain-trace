@@ -161,7 +161,7 @@ async def analyze_mri(
     file: UploadFile = File(...),
     request: Request = None,
     db: Session = Depends(get_db),
-    user: User = Depends(get_current_user),   # Requires authentication
+    user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
     Sequential Brain MRI Analysis:
@@ -171,6 +171,9 @@ async def analyze_mri(
       4. If Brain MRI → Grad-CAM Heatmap Generation
       5. Persist record in database
       6. Return structured prediction and report preview
+
+    Authentication is optional for analysis so the local screening flow can
+    be used before account setup. Authenticated uploads retain their owner.
 
     NOTE: model confidence values represent AI screening output,
     NOT clinically calibrated probability. Always confirm with a neurologist.
@@ -231,7 +234,7 @@ async def analyze_mri(
 
         scan_record = MriScan(
             id=analysis_id,
-            user_id=user.id,
+            user_id=user.id if user else None,
             filename=file.filename or "uploaded_scan.jpg",
             file_path=str(original_path),
             view_type="axial",
@@ -306,7 +309,7 @@ async def analyze_mri(
 
     scan_record = MriScan(
         id=analysis_id,
-        user_id=user.id,
+        user_id=user.id if user else None,
         filename=file.filename or "uploaded_scan.jpg",
         file_path=str(original_path),
         view_type="axial",

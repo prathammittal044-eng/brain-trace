@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { profileApi, messageApi } from '../services/apiClient';
+import { CaregiverCoordinationView } from './care_space/CaregiverCoordinationView';
 
 import { 
   Heart, 
@@ -24,7 +25,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Zap,
-  Info
+  Info,
+  Users
 } from 'lucide-react';
 import { BrainTraceLogo } from './BrainTraceLogo';
 
@@ -39,7 +41,7 @@ export const CaretakerDashboard: React.FC<CaretakerDashboardProps> = ({
   onLogout,
   onBackToHome
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'meds' | 'notes' | 'doctor'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'meds' | 'notes' | 'doctor' | 'connected-care'>('overview');
   const [isSosModalOpen, setIsSosModalOpen] = useState(false);
   const [sosSent, setSosSent] = useState(false);
 
@@ -205,6 +207,7 @@ export const CaretakerDashboard: React.FC<CaretakerDashboardProps> = ({
         <div className="flex items-center gap-2 border-b border-neutral-200 pb-2 overflow-x-auto">
           {[
             { id: 'overview', label: 'Patient Overview', icon: Activity },
+            { id: 'connected-care', label: 'Connected Care Hub', icon: Users },
             { id: 'meds', label: 'Medication & Care Plan', icon: Clock },
             { id: 'notes', label: 'Care Notes & Logs', icon: FileText },
             { id: 'doctor', label: 'Doctor Connect', icon: MessageSquare }
@@ -229,6 +232,10 @@ export const CaretakerDashboard: React.FC<CaretakerDashboardProps> = ({
         </div>
 
         {/* TAB 1: OVERVIEW */}
+        {activeTab === 'connected-care' && (
+          <CaregiverCoordinationView />
+        )}
+
         {activeTab === 'overview' && (
           <div className="space-y-6">
             

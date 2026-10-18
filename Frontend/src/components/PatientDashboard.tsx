@@ -99,6 +99,7 @@ import {
   NavigationDestination
 } from '../services/companionNavigation';
 import { mriApi, appointmentApi, profileApi } from '../services/apiClient';
+import { PatientCareHome } from './care_space/PatientCareHome';
 
 interface PatientDashboardProps {
   userName?: string;
@@ -483,6 +484,7 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
               { name: 'My Scans', icon: <Layers className="w-4 h-4" /> },
               { name: 'Cognitive Test', icon: <Brain className="w-4 h-4" /> },
               { name: 'Appointments', icon: <Calendar className="w-4 h-4" /> },
+              { name: 'Connected Care', icon: <Users className="w-4 h-4" /> },
               { name: 'Messages', icon: <MessageSquare className="w-4 h-4" /> },
               { name: 'Settings', icon: <Settings className="w-4 h-4" /> },
             ].map((item) => {
@@ -548,7 +550,9 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 p-4 md:p-8 overflow-y-auto space-y-6">
         
-        {activeTab === 'Appointments' ? (
+        {activeTab === 'Connected Care' ? (
+          <PatientCareHome />
+        ) : activeTab === 'Appointments' ? (
           /* ==================== APPOINTMENTS PAGE (EXACT REFERENCE DESIGN) ==================== */
           <div className="space-y-6">
             

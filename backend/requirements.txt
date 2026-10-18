@@ -14,4 +14,6 @@ torchvision          # Pre-built model architectures & image transforms
 opencv-python        # Saving Grad-CAM overlay images (cv2.imwrite)
 grad-cam             # Grad-CAM heatmap generation for Model 2 (imports as pytorch_grad_cam)
 
+huggingface_hub      # Download model checkpoints from Hugging Face Hub
+
 python-dotenv        # Load .env file (optional, for local development)

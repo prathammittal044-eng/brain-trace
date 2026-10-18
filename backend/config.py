@@ -31,7 +31,18 @@ SESSION_COOKIE_NAME = "demenx_session"
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or ""
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
-# --- Model paths ---
+# --- Hugging Face Hub ---
+# Public repos → no token needed. For private repos set HF_TOKEN in .env.
+HF_TOKEN: str | None = os.getenv("HF_TOKEN") or None
+
+HF_MODEL1_REPO     = os.getenv("HF_MODEL1_REPO",     "epsrbtcs/model1_mri_vs_nonmri")
+HF_MODEL1_FILENAME = os.getenv("HF_MODEL1_FILENAME", "best_model1.pth")
+
+HF_MODEL2_REPO     = os.getenv("HF_MODEL2_REPO",     "epsrbtcs/model2_mri_classifier")
+HF_MODEL2_FILENAME = os.getenv("HF_MODEL2_FILENAME", "best_model2.pth")
+
+# --- Model local-fallback paths ---
+# Used only when HF Hub is unreachable or HF_MODEL*_REPO is set to empty string.
 def _resolve_backend_path(raw_val: str, default_path: Path) -> str:
     if not raw_val:
         return str(default_path)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { profileApi, messageApi } from '../services/apiClient';
 import { CaregiverCoordinationView } from './care_space/CaregiverCoordinationView';
+import { CaretakerCareSpaceView } from './CaretakerCareSpaceView';
 
 import { 
   Heart, 
@@ -233,7 +234,10 @@ export const CaretakerDashboard: React.FC<CaretakerDashboardProps> = ({
 
         {/* TAB 1: OVERVIEW */}
         {activeTab === 'connected-care' && (
-          <CaregiverCoordinationView />
+          <div className="space-y-8">
+            <CaretakerCareSpaceView caretakerName={userName} />
+            <CaregiverCoordinationView />
+          </div>
         )}
 
         {activeTab === 'overview' && (

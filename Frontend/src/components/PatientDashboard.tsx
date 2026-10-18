@@ -100,6 +100,7 @@ import {
 } from '../services/companionNavigation';
 import { mriApi, appointmentApi, profileApi } from '../services/apiClient';
 import { PatientCareHome } from './care_space/PatientCareHome';
+import { CareSpaceView } from './CareSpaceView';
 
 interface PatientDashboardProps {
   userName?: string;
@@ -138,7 +139,7 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
 
   // Cognitive Assessment Flow State
   const [cognitiveSubView, setCognitiveSubView] = useState<
-    'dashboard' | 'intro' | 'practice' | 'workspace' | 'results' | 'report' | 'history'
+    'dashboard' | 'intro' | 'practice' | 'workspace' | 'results' | 'report' | 'history' | 'carespace'
   >('dashboard');
   const [activeCognitiveSession, setActiveCognitiveSession] = useState<AssessmentSession | null>(null);
   const [selectedReportSession, setSelectedReportSession] = useState<AssessmentSession | null>(null);
@@ -1861,7 +1862,12 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
           />
         ) : activeTab === 'Cognitive Test' ? (
           /* ==================== COGNITIVE ASSESSMENT PAGE FLOW ==================== */
-          cognitiveSubView === 'intro' ? (
+          cognitiveSubView === 'carespace' ? (
+            <CareSpaceView
+              patientName={cleanUserName}
+              onNavigateTab={() => setCognitiveSubView('dashboard')}
+            />
+          ) : cognitiveSubView === 'intro' ? (
             <AssessmentIntroduction
               hasResumeSession={!!activeCognitiveSession && activeCognitiveSession.status === 'in_progress'}
               onResumeSession={() => {
@@ -1946,6 +1952,14 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
                   Daily brain exercises to track and improve your cognitive health
                 </p>
               </div>
+              <button
+                type="button"
+                onClick={() => setCognitiveSubView('carespace')}
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-[#09090b] bg-emerald-400 px-4 py-2.5 text-xs font-bold text-black shadow-[3px_3px_0px_0px_rgba(9,9,11,1)] transition-transform hover:-translate-y-0.5"
+              >
+                <Compass className="h-4 w-4" />
+                CareSpace
+              </button>
             </div>
 
             {/* TOP 2 BENTO CARDS */}

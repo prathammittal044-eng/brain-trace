@@ -1,4 +1,4 @@
-# 🧠 BrainTrace / DemenX
+# 🧠 BrainTrace
 > **AI-Powered Multi-Stage Neurocognitive Screening & Connected Dementia Care Platform**
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)

@@ -52,13 +52,11 @@ def get_current_user(
     """
     Requires an authenticated user. Raises 401 if not authenticated.
     """
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication required. Please log in.",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Authentication required. Please log in.",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
 
 
 def require_role(*allowed_roles: str):

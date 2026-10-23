@@ -51,6 +51,10 @@ def _load_state(model: nn.Module, checkpoint_path: str, device: torch.device) ->
     raw = torch.load(checkpoint_path, map_location=device, weights_only=False)
     state = raw.get("model_state_dict", raw) if isinstance(raw, dict) else raw
     model.load_state_dict(state)
+    del raw
+    del state
+    import gc
+    gc.collect()
 
 
 def _download_from_hub(repo_id: str, filename: str, token: Optional[str]) -> str:

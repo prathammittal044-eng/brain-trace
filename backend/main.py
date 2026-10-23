@@ -6,6 +6,10 @@ import logging
 import os
 from contextlib import asynccontextmanager
 import torch
+try:
+    torch.set_num_threads(1)
+except Exception:
+    pass
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -63,14 +67,44 @@ def _resolve_device() -> torch.device:
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
+def get_model1():
+    """Lazily load Model 1 on first demand."""
+    global _model1, _device
+    if _model1 is None:
+        _device = _device or _resolve_device()
+        logger.info("Lazily loading Model 1 (MRI vs Non-MRI) on %s...", _device)
+        _model1 = model1_service.load_model(
+            hf_repo=config.HF_MODEL1_REPO,
+            hf_filename=config.HF_MODEL1_FILENAME,
+            local_path=config.MODEL1_PATH,
+            device=_device,
+            hf_token=config.HF_TOKEN,
+        )
+    return _model1
+
+
+def get_model2():
+    """Lazily load Model 2 on first demand."""
+    global _model2, _device
+    if _model2 is None:
+        _device = _device or _resolve_device()
+        logger.info("Lazily loading Model 2 (Dementia Classifier) on %s...", _device)
+        _model2 = model2_service.load_model(
+            hf_repo=config.HF_MODEL2_REPO,
+            hf_filename=config.HF_MODEL2_FILENAME,
+            local_path=config.MODEL2_PATH,
+            device=_device,
+            hf_token=config.HF_TOKEN,
+        )
+    return _model2
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize DB and load ML models once at startup."""
+    """Initialize DB and configure AI runtime."""
     global _model1, _model2, _device
 
     # 1. Initialize and seed database
-    # Seeding only runs when SEED_DEMO_DATA=true (default true for dev/demo).
-    # In production, set SEED_DEMO_DATA=false to prevent fabricated records.
     _seed = os.getenv("SEED_DEMO_DATA", "true").lower() in ("true", "1", "yes")
     try:
         init_db(seed=_seed)
@@ -82,37 +116,19 @@ async def lifespan(app: FastAPI):
     app.state.device = _device
     logger.info("Deep learning compute device: %s", _device)
 
-    # 3. Load Model 1 (MRI Validator) — from HF Hub, local fallback
-    try:
-        _model1 = model1_service.load_model(
-            hf_repo=config.HF_MODEL1_REPO,
-            hf_filename=config.HF_MODEL1_FILENAME,
-            local_path=config.MODEL1_PATH,
-            device=_device,
-            hf_token=config.HF_TOKEN,
-        )
-        app.state.model1 = _model1
-        logger.info("✓ Model 1 (MRI vs Non-MRI) ready on %s", _device)
-    except Exception:
-        logger.exception("Failed to load Model 1 (tried HF Hub + local fallback)")
-        _model1 = None
-        app.state.model1 = None
-
-    # 4. Load Model 2 (Dementia Classifier) — from HF Hub, local fallback
-    try:
-        _model2 = model2_service.load_model(
-            hf_repo=config.HF_MODEL2_REPO,
-            hf_filename=config.HF_MODEL2_FILENAME,
-            local_path=config.MODEL2_PATH,
-            device=_device,
-            hf_token=config.HF_TOKEN,
-        )
-        app.state.model2 = _model2
-        logger.info("✓ Model 2 (Dementia Classifier) ready on %s", _device)
-    except Exception:
-        logger.exception("Failed to load Model 2 (tried HF Hub + local fallback)")
-        _model2 = None
-        app.state.model2 = None
+    # 3. Model Loading: Opt-in eager preload; default to lazy-loading to stay under 512MB RAM
+    _preload = os.getenv("PRELOAD_MODELS", "false").lower() in ("true", "1", "yes")
+    if _preload:
+        try:
+            _model1 = get_model1()
+            app.state.model1 = _model1
+            _model2 = get_model2()
+            app.state.model2 = _model2
+            logger.info("✓ AI Models preloaded into memory.")
+        except Exception:
+            logger.exception("Preload failed; will retry on first request.")
+    else:
+        logger.info("AI Models configured for lazy-loading on first inference request (Render 512MB RAM safe).")
 
     yield  # Application running
 
